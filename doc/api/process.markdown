@@ -185,13 +185,12 @@ event tells you when the list of unhandled rejections shrinks.
 For example using the rejection detection hooks in order to keep a list of all
 the rejected promises at a given time:
 
-    var unhandledRejections = [];
+    var unhandledRejections = new Set();
     process.on('unhandledRejection', function(reason, p) {
-        unhandledRejections.push(p);
+      unhandledRejections.add(p);
     });
     process.on('rejectionHandled', function(p) {
-        var index = unhandledRejections.indexOf(p);
-        unhandledRejections.splice(index, 1);
+      unhandledRejections.delete(p);
     });
 
 You could then record this list in some error log, either periodically or upon
